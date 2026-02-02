@@ -2,7 +2,7 @@ name: a1_tools
 description: "A1 Tools"
 publish_to: 'none'
 
-version: 4.2.68+4268
+version: 4.2.69+4269
 
 environment:
   sdk: ^3.9.2
