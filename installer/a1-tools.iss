@@ -48,8 +48,8 @@ DisableProgramGroupPage=yes
 Compression=lzma2
 SolidCompression=yes
 
-; Output folder (absolute as requested)
-OutputDir=H:\A1Chimney\a1_tools\installer\output
+; Output folder (relative to .iss file location for CI compatibility)
+OutputDir=output
 OutputBaseFilename=A1-Tools-Setup-{#MyAppVersion}
 
 ; NOTE: paths below are relative to THIS .iss file (installer\)
