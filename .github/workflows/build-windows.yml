@@ -62,6 +62,32 @@ jobs:
       - name: Install dependencies
         run: flutter pub get
 
+      - name: Download WebView2 Fixed Runtime
+        shell: pwsh
+        run: |
+          # Download WebView2 Fixed Version Runtime from NuGet
+          $webview2Version = "140.0.3485.81"
+          $nugetUrl = "https://www.nuget.org/api/v2/package/Microsoft.Web.WebView2/$webview2Version"
+          $zipPath = "webview2.zip"
+          $extractPath = "webview2_temp"
+          $targetPath = "windows/third_party/WebView2FixedRuntime"
+
+          Write-Host "Downloading WebView2 Fixed Runtime v$webview2Version..."
+          Invoke-WebRequest -Uri $nugetUrl -OutFile $zipPath
+
+          Write-Host "Extracting..."
+          Expand-Archive -Path $zipPath -DestinationPath $extractPath -Force
+
+          # Create target directory
+          New-Item -ItemType Directory -Force -Path $targetPath
+
+          # Copy the x64 runtime files
+          $runtimeSource = "$extractPath/runtimes/win-x64/native"
+          Copy-Item -Path "$runtimeSource/*" -Destination $targetPath -Recurse -Force
+
+          Write-Host "WebView2 Fixed Runtime installed to $targetPath"
+          dir $targetPath
+
       - name: Build Windows x64
         run: flutter build windows --release --build-name=${{ steps.version.outputs.version }}
 
