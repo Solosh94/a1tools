@@ -1,0 +1,1334 @@
+<head>
+<style type="text/css">
+	@page {margin: 125px 0; header: html_myHeader; margin-header: 0; footer: html_myFooter; margin-footer: 0;}
+	body {font-family: mulish;}
+	h1 {font-family: basketball; font-weight: 400; color: #F49321; text-align: center;}
+	h2 {font-family: passionone; font-weight: 400; color: #DB2323;}
+	h3 {font-family: passionone; font-weight: 400; color: #DB2323; font-size: 18px; text-align: center;}
+	p {font-size: 14px; margin: 0;}
+	code {font-family: ccourier; color: orange;}
+	.bg-img {width: 20%;}
+	.logo {float: left; margin-top: -75px; width: 32.5%; padding-left: 10px;}
+	.date {float: left; margin-top: -20px; width: 33%;}
+	.date p {text-align: center; color: #fff;}
+	.certefied {float: left; margin-top: -10px; width: 32%; text-align: right; padding-right: 10px;}
+	.certefied-img {width: 40%;}
+	.welcome {margin: 20px 10px;}
+	.row {margin: 0 10px;}
+	.col-1 {display: float; float: left; width: 100%; margin: 0 10px;}
+	.col-2-70 {display: float; float: left; width: 68%; margin: 0 10px;}
+	.col-2-30 {display: float; float: left; width: 29.4%; margin: 0 10px;}
+	.col-50-l {display: float; float: left; width: 48.7%; margin: 0 10px;}
+	.col-50-r {display: float; float: right; width: 48.7%; margin: 0 10px; text-align: right;}
+	.col-3 {display: float; float: left; width: 32%; text-align: center; height: 50%;}
+	.image-block {display: block; position: absolute;}
+	.img-file {width: 180px; height: 240px; border: 3px solid #000;}
+	.img-file-2 {width: 188px; height: 287px; border: 3px solid #000; text-align: center;}
+	.sign {width: 150px; height: auto;}
+	.signatures {margin-top: 200px;}
+	.footer-container {background-color: #000; padding: 15px; border-top: 5px solid #FFD500;}
+	.footer-container p {color: #fff;}
+	.contact {display: float; float: left; width: 50%;}
+	.contact-2 {display: float; float: left; width: 25%;}
+	.recommend p {text-align: center;}
+	table {border-collapse: collapse; border: 2px solid #888; font-family: mulish; font-size: 14px; width: 99%;}
+	th {background-color: #ffe9cf;}
+	th,td {border: 1px solid #999; padding: 8px 10px;}
+	tr:nth-child(even) {background-color: #eee;}
+	tfoot th {font-size: 16px; text-align: right;}
+</style>
+</head>
+<body>
+	<htmlpageheader name="myHeader">
+		<img class="bg-img" src="{{Image(23).file_loc}}"/><img class="bg-img" src="{{Image(23).file_loc}}"/><img class="bg-img" src="{{Image(23).file_loc}}"/><img class="bg-img" src="{{Image(23).file_loc}}"/><img class="bg-img" src="{{Image(23).file_loc}}"/>
+		<div class="logo"><img class="logo-img" src="{{Image(28).file_loc}}"/></div>
+		<div class="date"><p><strong>Job ID #{{form.job_id}}</strong><br><strong>Inspection Date:</strong><br>{{form.date}} - {{form.time}}<br><strong>Inspector:</strong> {{current_user.name}}</p></div>
+		<div class="certefied"><img class="certefied-img" src="{{Image(45).file_loc}}"/></div>
+	</htmlpageheader>
+	<div class="container">
+		<div class="welcome">
+			<div class="row">
+				<h1 style="margin: 0;">A1 Chimney - Inspection Report</h1>
+				<h2 style="text-align: center; margin: 0;">{{form.inspection_level}}</h2>
+				<p>Hello {{form.fname}} {{form.lname}},<br>Thank you for choosing A1 Chimney for your chimney service advisor.{% if form.reason_for_inspection != '' %}<br>We inspecting your system today for the reason of "{% if form.reason_for_inspection != 'Other' %}{{form.reason_for_inspection}}{% endif %}{% if form.reason_for_inspection == 'Other' %}{{form.other_reason}}{% endif %}".{% endif %}<br> Here are your inspection details: </p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="col-2-70">
+				<h2>Client Information</h2>
+				<p>	
+					<strong>Full Name:</strong><br>{{form.fname}} {{form.lname}}<br>
+					<strong>Address:</strong><br>{{form.address1}}{% if form.address2 != '' %}, {{form.address2}}{% endif %}, {{form.city}}, {{form.state}} {{form.zipcode}}<br>
+					<strong>Phone Number:</strong><br>{{form.phone}}<br>
+					<strong>Email Address:</strong><br>{{form.email1}}
+					{% if form.email2 != '' %}<br><strong>Email Address 2:</strong><br>{{form.email2}}{% endif %}
+				</p>
+			</div>
+			<div class="col-2-30">
+				<h2>Exterior Home Image</h2>
+				<img class="img-file" src="{{form_raw.ext_h_img}}">
+			</div>
+		</div>
+		{% if form.system_type == 'Electric' %}
+			<div class="row">
+				<div class="col-2-70">
+					<h2>System Type: {{form.system_type}}</h2>
+					<p>
+						<strong>Electric Fireplace System is {% if form.electric_system_working == 'No' %}Not{% endif %} Working</strong><br>
+						{% if form.electric_system_working == 'No' %}
+							<strong>Electric System Type:</strong><br>{{form.electric_system_type}}<br>
+							<strong>Electric Starter Type:</strong><br>{{form.elctric_starter_type}}<br>
+							<strong>Electric Fireplace Condition:</strong><br>{{form.electric_fireplace_condition}}<br>
+							<strong>Electric Fireplace Width:</strong> {{form.electric_fireplace_width}}<br>
+							<strong>Electric Fireplace Height:</strong> {{form.electric_fireplace_height}}<br>
+							{% if form.electric_fireplace_condition == 'Light Not Turning On' %}<span style="font-size: 12px; font-weight: bold;">In case of your electric fireplace is not working we recommend consideration of replacement.</span>{% endif %}
+						{% endif %}
+					</p>
+				</div>
+				<div class="col-2-30">
+					<h2>Electric Fireplace Image</h2>
+					<img class="img-file" src="{{form_raw.electric_fireplace_img}}">
+				</div>
+			</div>
+			<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					<p style="font-weight: bold;">*All Electric fireplaces are meeting all the safety regulations and can not put you in any potential fire hazards.<br><br><strong>Electric Fireplace Safety Tips</strong><br>When it comes to electric fireplace safety, it’s a little less intimidating than traditional space heaters. Electric fireplace heaters are far sturdier than space heaters, making them nearly impossible to knock over. However, as with traditional space heaters, it’s important to obey electric fireplace safety guidelines. For instance:</p>
+					<ul>
+						<li><strong>Keep Other Objects at a Safe Distance</strong><br>Your electric fireplace heater should be kept clear of other objects such as blankets, electronics, furniture or toys. Leave at least three feet of clear space in all directions and never place anything on top of your electric fireplace.</li>
+						<li><strong>Avoid Touching the Surface</strong><br>The surfaces of your electric fireplace can become quite hot to the touch during use. It’s best not to touch it at all when in use.</li>
+						<li><strong>Do Not Leave Children or Pets Unattended</strong><br>Accidents can happen, especially when it involves small kids or animals, so don’t leave either unattended when your electric fireplace is in use.</li>
+						<li><strong>Never Use Your Unit Outside</strong><br>Electric fireplace heaters are designed to be used indoors only.</li>
+						<li><strong>Make Sure Your Outlets are Safe</strong><br>Never plug your electric fireplace heater into an outlet you suspect is unsafe. Also, never use a cord or plug that is frayed or damaged. If you’re unsure of the safety of your electric system, consider an electrical safety inspection.</li>
+						<li><strong>Unplug the Unit When Not in Use</strong><br>For precautionary reasons, always unplug your electric fireplace heater when it’s not in use.</li>
+						<li><strong>Never Modify the Unit</strong><br>Modifying an electric fireplace can be extremely dangerous. Always consult the owner’s manual when problems come up. If repairs or modifications are required, hire a qualified electrician to do the work.</li>
+					</ul>
+				</div>
+			</div>
+		{% endif %}
+		{% if form.system_type == 'Furnace' %}
+			<div class="row">
+				<div class="col-2-70">
+					<h2>System Type: {{form.system_type}}</h2>
+					<p>
+						<strong>Furnace Burning Type:</strong> {{form.burning_type}}<br>
+						{% if form.furnace_brand != '' %}
+							<strong>Furnace Brand:</strong> {{form.furnace_brand}}<br>
+						{% endif %}
+						{% if form.furnace_model_no != '' %}
+							<strong>Furnace Model No.:</strong> {{form.furnace_model_no}}<br>
+						{% endif %}
+						<strong>Visual Furnace Inspection:</strong> {{form.furnace_visual_inspection}}<br><span style="font-size: 12px; font-weight: bold; text-transform: uppercase;">Please note that our furnace inspection is visual only!</span><br>
+						{% if form.furnace_visual_inspection == 'Does Not Meets Industry Standards' %}
+							<strong>Explanation:</strong> {{form.furnace_visual_inspection_explanation}}<br>
+						{% endif %}
+						{% if form.burning_type != '' and form.burning_type != 'Pellet Burning' %}
+							<strong>Furnace Clearance to Combustibles:</strong> {{form.furnace_clearance}}<br>
+							{% if form.burning_type == 'Gas / Oil Burner' and form.furnace_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE CODE 603.5.3.1 GAS OR FUEL-OIL HEATERS</strong><br>
+								A minimum of 18 inches (457 mm) shall be maintained between gas or fuel-oil heat-producing appliances and combustible materials.<br><br>
+							{% endif %}
+							{% if form.burning_type == 'Solid Fuel' and form.furnace_clearance == 'Does Not Meets Industry Standards' or form.burning_type == 'Wood Burning' and form.furnace_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE 603.5.3.2 SOLID FUEL-BURNING HEATERS</strong><br>
+								A minimum of 36 inches (914 mm) shall be maintained between solid fuel-burning appliances and combustible materials.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.furnace_venting == 'Unvented' %}
+							<strong>Furnace Venting:</strong> {{form.furnace_venting}}
+						{% endif %}
+					</p>
+				</div>
+				<div class="col-2-30">
+					<h2>Furnace Image</h2>
+					<img class="img-file" src="{{form_raw.furnace_img}}">
+				</div>
+			</div>
+			{% if form.furnace_venting == 'Vented' %}
+			<pagebreak></pagebreak>
+				<div class="row">
+					<div class="col-1">
+						<p>
+							<strong>Furnace Venting:</strong> {{form.furnace_venting}}<br>
+							<strong>Furnace Piping Type:</strong> {{form.furnace_piping_type}}<br>
+							<strong>Pipe Clearance to Combustibles:</strong> {{form.pipe_clearance}}<br>
+							{% if form.furnace_piping_type == 'B-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE M1803.3.4 CLEARANCE</strong><br>
+								Type B vents shall be tested in accordance with UL 441 and installed in accordance with the manufacturer’s installation instructions. Such vents shall be installed with a minimum clearance of 1 inch (25 mm) from combustible materials.<br><br>
+							{% endif %}
+							{% if form.furnace_piping_type == 'L-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE M1803.3.4 CLEARANCE</strong><br>
+								Type L vents shall be tested in accordance with UL 641 and installed in accordance with their listing and the manufacturer’s installation instructions. Such vents shall be installed with a minimum clearance of 3 inches (76 mm) from combustible materials.<br><br>
+							{% endif %}
+							{% if form.furnace_piping_type == 'Direct Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE M1804.2.6</strong><br>
+								Direct-vent appliances shall be installed in accordance with the manufacturer's installation instructions. The clearances to combustibles shall be as specified in the listing and the manufacturer's instructions.<br><br>
+							{% endif %}
+							{% if form.furnace_piping_type == 'Single Wall Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE G2427.7.8 SINGLE-WALL METAL PIPE</strong><br>
+								Single-wall metal pipe shall be constructed of galvanized sheet steel not less than 0.0304 inch (0.77 mm) thick, or other approved noncombustible material. Single-wall metal pipe shall be installed with a minimum clearance of 6 inches (152 mm) from combustibles.<br><br>
+							{% endif %}
+							{% if form.furnace_piping_type == 'Other' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<strong>Explanation:</strong><br>{{form.other_furnace_piping_type_explanation}}<br><br>
+							{% endif %}
+							<strong>Furnace Pipe Circumference:</strong> {{form.furnace_pipe_circumference}}<br>
+							<strong>Furnace Pipe Diameter:</strong> {{form.furnace_pipe_diameter}}<br>
+							<strong>Furnace Pipes Connection:</strong> {{form.furnace_pipes_connection}}<br>
+							{% if form.furnace_pipes_connection == 'Unsealed / Unconnected' %}
+								<strong>INSPECTION FAILED BY CODE 501.7.1 CLOSURE AND ACCESS</strong><br>
+								A noncombustible seal shall be provided below the point of connection to prevent entry of room air into the flue.<br><br>
+							{% endif %}
+							<strong>Furnace Pipes Soot Condition:</strong> {{form.furnace_pipe_soot_condition}}<br>
+							{% if form.furnace_pipe_soot_condition != '' and form.furnace_pipe_soot_condition != 'Cleaned / Swept' %}
+								<strong>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</strong><br>
+								Chimneys, fireplaces, and vents shall be inspected at least once a year for soundness, freedom from deposits, and correct clearances. Cleaning, maintenance, and repairs shall be done if necessary.<br><br>
+							{% endif %}
+							{% if form.boiler_pipes_condition != '' %}
+								<strong>Boiler Pipes Condition:</strong> {{form.boiler_pipes_condition}}<br>
+								{% if form.boiler_pipes_condition == 'Does Not Meets Industry Standards' %}
+									<strong>Boiler Pipes Connection:</strong> {{form.boiler_pipe_connection}}<br>
+									{% if form.boiler_pipe_connection == 'Unsealed / Unconnected' %}
+										<strong>INSPECTION FAILED BY CODE M1803.4.1 CLOSURE AND ACCESSIBILITY</strong><br>
+										A noncombustible seal shall be provided below the point of connection to prevent entry of room air into the flue. Means shall be provided for access to the flue for inspection and cleaning.<br><br>
+									{% endif %}
+									{% if form.other_boiler_pipes_condition != '' %}
+										<strong>Other Boiler Pipes Condition:</strong><br>{{form.other_boiler_pipes_condition}}<br>
+									{% endif %}
+								{% endif %}
+							{% endif %}
+							<strong>Flue Ventilation Type:</strong> {{form.flue_ventilation_type}}<br>
+							{% if form.flue_ventilation_type != '' and form.flue_ventilation_type == 'Masonry / Bricks' %}
+								<strong>Cleanout Door:</strong> {{form.cleanout_door_1}}<br>
+								{% if form.cleanout_door_1 == 'Untight-Fitting / Combustible Cover' %}
+									<strong>INSPECTION FAILED BY CODE 501.15.3 CLEANOUT</strong><br>
+									Masonry chimney flues shall be provided with a cleanout opening having a minimum height of 6 inches (152 mm). The upper edge of the opening shall be located not less than 6 inches (152 mm) below the lowest chimney inlet opening. The cleanout shall be provided with a tight-fitting, noncombustible cover.<br><br>
+								{% endif %}
+							{% endif %}
+							{% if form.flue_ventilation_type == 'Side Wall Metal Pipe' %}
+								<strong>Side Wall Metal Pipe Condition:</strong> {{form.side_wall_metal_pipe_condition}}<br>
+								{% if form.side_wall_metal_pipe_condition == 'Does Not Meets Industry Standards' %}
+									<strong>Explanation:</strong><br>{{form.side_wall_metal_pipe_condition_exp}}<br><br>
+								{% endif %}
+							{% endif %}
+							{% if form.flue_ventilation_type != '' %}
+								<strong>Chimney Liner:</strong> {{form.chimney_liner}}<br>
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+									<strong>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</strong><br>
+									All chimneys shall be lined. The lining material shall be appropriate for the type of appliance connected, in accordance with the terms of the appliance listing and manufacturer’s instructions.<br><br>
+								{% endif %}
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' %}
+									<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+								{% endif %}
+							{% endif %}
+						</p>
+					</div>
+				</div>
+			{% endif %}
+		{% endif %}
+		{% if form.system_type == 'Masonry Fireplace' %}
+			<div class="row">
+				<div class="col-2-70">
+					<h2>System Type: {{form.system_type}}</h2>
+					<p>
+						<strong>Fireplace Width:</strong> {{form.f_width}}<br>
+						<strong>Fireplace Height:</strong> {{form.f_height}}<br>
+						<strong>Fireplace Depth:</strong> {{form.f_depth}}<br>
+						<strong>Fireplace Square Foot Dimensions:</strong> {{form.fireplace_dimensions}}<br>
+						{% if form.f_depth != '' and form.f_depth < 20 %}
+							<strong>INSPECTION FAILED BY CODE R1001.6 FIREBOX DIMENSIONS</strong><br>
+							The firebox of a fireplace shall have a minimum depth of 20 inches (508 mm). The throat shall not be less than 8 inches (203 mm) above the fireplace opening. The throat opening shall not be less than 4 inches (102 mm) deep. The cross-sectional area of the passageway above the firebox, including the throat, damper and smoke chamber, shall not be less than the cross-sectional area of the flue.<br><br>
+						{% endif %}
+						<strong>Hearth Extension Front:</strong> {{form.hearth_e_front}}<br>
+						<strong>Hearth Extension Side:</strong> {{form.hearth_e_side}}<br>
+						{% if form.hearth_extension_regulation == 'Yes' %}
+							<strong>Hearth Extension Dimensions:</strong> Meets Industry Standards<br>
+						{% endif %}
+						{% if form.hearth_extension_regulation == 'No' %}
+							<strong>Hearth Extension Dimensions:</strong> Does Not Meets Industry Standards<br>
+							<strong>INSPECTION FAILED BY CODE R1001.10 HEARTH EXTENSION DIMENSIONS</strong><br>
+							Hearth extensions shall extend not less than 16 inches (406 mm) in front of and not less than 8 inches (203 mm) beyond each side of the fireplace opening. Where the fireplace opening is 6 square feet (0.6 m2) or larger, the hearth extension shall extend not less than 20 inches (508 mm) in front of and not less than 12 inches (305 mm) beyond each side of the fireplace opening.<br><br>
+						{% endif %}
+					</p>
+				</div>
+				<div class="col-2-30">
+					<h2>Masonry Fireplace Image</h2>
+					<img class="img-file" src="{{form_raw.masonry_fireplace_img}}">
+				</div>
+			</div>
+			<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					<p>
+						<strong>Fireplace Clearance to Combustibles:</strong> {{form.fireplace_clearance_to_combustibles}}<br>
+						{% if form.fireplace_clearance_to_combustibles == 'Does Not Meets Industry Standards' %}
+							<strong>INSPECTION FAILED BY CODE R1001.11 CLEARANCES</strong><br>
+							Masonry fireplaces shall have a minimum airspace clearance to combustibles of 2 inches (51 mm). The airspace clearance shall not be filled, except to provide fireblocking in accordance with Section R1001.12.<br><br>
+						{% endif %}
+						{% if form.fireplace_glass_door != '' %}
+							<strong>Fireplace Glass Door Condition:</strong> {{form.fireplace_glass_door}}<br>
+							{% if form.fireplace_glass_door == 'Does Not Meets Industry Standards' %}
+								<strong>Explanation:</strong><br>{{form.fireplace_glass_door_exp}}<br><br>
+							{% endif %}
+						{% endif %}
+						<strong>Firebox Condition:</strong> {{form.firebox_condition}}<br>
+						{% if form.firebox_condition == 'Does Not Meets Industry Standards' %}
+							<strong>Firebox Repair Needs:</strong>
+							<ul>
+								{% for repair in form_raw.firebox_repair_needs %}
+									<li>{{ repair }}</li>
+								{% endfor %}
+							</ul>
+							{% if form.other_repair_need != '' %}
+								<strong>Other Firebox Repair Need:</strong><br>{{form.other_repair_need}}<br><br>
+							{% endif %}
+							{% if form_raw.firebox_repair_needs != '' %}
+								<strong>INSPECTION FAILED BY CODE R1001.5 FIREBOX WALLS</strong><br>
+								Width of joints between firebricks shall not be greater than 1/4 inch (6.4 mm). firebricks shall not be greater than 1/4 inch (6.4 mm).<br><br>
+							{% endif %}
+						{% endif %}
+						<strong>Ash Dump:</strong> {{form.ash_dump}}<br>
+						{% if form.ash_dump == 'Does Not Meets Industry Standards' %}
+							<strong>INSPECTION FAILED BY CODE R1001.2.1 ASH DUMP CLEANOUT</strong><br>
+							Cleanout openings located within foundation walls below fireboxes, when provided, shall be equipped with ferrous metal or masonry doors and frames constructed to remain tightly closed except when in use. Cleanouts shall be located to allow access and so that ash removal will not create a hazard to combustible materials.<br><br>
+						{% endif %}
+						<strong>Gas Line:</strong> {{form.gas_line}}<br>
+						{% if form.gas_line == 'Does Not Meets Industry Standards' %}
+							<strong>Gas Line Repair Needs:</strong><br>
+							<ul>
+							{% for gasrepair in form_raw.gas_line_repair_needs %}
+								<li>{{ gasrepair }}</li>
+							{% endfor %}
+							</ul>
+							{% if form.other_gas_line_repair_need != '' %}
+								<strong>Other Gas Line Repair Need:</strong><br>{{form.other_gas_line_repair_need}}<br><br>
+							{% endif %}
+						{% endif %}
+						<strong>Damper:</strong> {{form.damper}}<br>
+						{% if form.damper == 'Does Not Meets Industry Standards' %}
+							<strong>Damper Repair Needs:</strong><br>
+							<ul>
+							{% for damperrepair in form_raw.damper_repair_needs %}
+								<li>{{ damperrepair }}</li>
+							{% endfor %}
+							</ul>
+							{% if form.other_damper_repair_need != '' %}
+								<strong>Other Damper Repair Need:</strong><br>{{form.other_damper_repair_need}}<br><br>
+							{% endif %}
+							{% if form_raw.damper_repair_needs != '' %}
+								<strong>INSPECTION FAILED BY CODE R1001.7.1 DAMPER</strong><br>
+								All fireplaces shall be equipped with a ferrous metal damper located not less than 8 inches (203 mm) above the top of the fireplace opening. Dampers shall be installed in the fireplace or the chimney venting the fireplace, and shall be operable from the room containing the fireplace.<br><br>
+							{% endif %}
+						{% endif %}
+						<strong>Smoke Chamber:</strong> {{form.smoke_chamber}}<br>
+						{% if form.smoke_chamber == 'Does Not Parged Smooth' %}
+							<strong>INSPECTION FAILED BY CODE R1001.8 SMOKE CHAMBER</strong><br>
+							Smoke chamber walls shall be constructed of solid masonry units, hollow masonry units grouted solid, stone or concrete. The total minimum thickness of front, back and side walls shall be 8 inches (203 mm) of solid masonry. The inside surface shall be parged smooth with refractory mortar conforming to ASTM C199. Where a lining of firebrick not less than 2 inches (51 mm) thick, or a lining of vitrified clay not less than 5/8 inch (16 mm) thick, is provided, the total minimum thickness of front, back and side walls shall be 6 inches (152 mm) of solid masonry, including the lining. Firebrick shall conform to ASTM C1261 and shall be laid with medium duty refractory mortar conforming to ASTM C199. Vitrified clay linings shall conform to ASTM C315.<br><br>
+						{% endif %}
+						<strong>Soot Condition:</strong> {{form.masonry_soot}}<br>
+						{% if form.masonry_soot != '' and form.masonry_soot != 'Cleaned / Swept' %}
+							<strong>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</strong><br>
+							Chimneys, fireplaces, and vents shall be inspected at least once a year for soundness, freedom from deposits, and correct clearances. Cleaning, maintenance, and repairs shall be done if necessary.<br><br>
+						{% endif %}
+						<strong>Chimney Liner:</strong> {{form.chimney_liner}}<br>
+						{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+							<strong>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</strong><br>
+							All chimneys shall be lined. The lining material shall be appropriate for the type of appliance connected, in accordance with the terms of the appliance listing and manufacturer’s instructions.<br><br>
+						{% endif %}
+						{% if form.chimney_liner == 'Does Not Meets Industry Standards' %}
+							<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
+		{% if form.system_type == 'Built-In Fireplace' %}
+			<div class="row">
+				<div class="col-2-70">
+					<h2>System Type: {{form.system_type}}</h2>
+					<p>
+						<strong>Fireplace Width:</strong> {{form.built_in_width}}<br>
+						<strong>Fireplace Height:</strong> {{form.built_in_height}}<br>
+						<strong>Fireplace Depth:</strong> {{form.built_in_depth}}<br>
+						<strong>Fireplace Model No.:</strong> {{form.built_in_model_no}}<br>
+						<strong>Fireplace Serial No.:</strong> {{form.built_in_serial_no}}<br>
+						<strong>Fireplace Hearth Extensions:</strong> {{form.built_in_hearth}}<br>
+						{% if form.built_in_hearth == 'Does Not Meets Industry Standards' %}
+							<strong>INSPECTION FAILED BY CODE R1004.2 HEARTH EXTENSIONS</strong><br>
+							The hearth extension of a factory-built fireplace shall be installed in accordance with the listing of the fireplace. Where a fireplace is elevated above or overhangs a combustible floor, a noncombustible hearth extension shall be provided in accordance with the manufacturer’s instructions.<br><br>
+							<strong>Explanation:</strong><br>{{form.built_in_hearth_exp}}<br><br>
+						{% endif %}
+					</p>
+				</div>
+				<div class="col-2-30">
+					<h2>Built-In Fireplace Image</h2>
+					<img class="img-file" src="{{form_raw.buit_in_fireplace_img}}">
+				</div>
+			</div>
+			<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					<p>
+						<strong>Fireplace Clearance to Combustibles:</strong> {{form.built_in_clearance}}<br>
+						{% if form.built_in_clearance == 'Does Not Meets Industry Standards' %}
+							<strong>INSPECTION FAILED BY CODE R1004.3 CLEARANCES</strong><br>
+							Factory-built fireplaces shall be installed with the clearances specified in the listing and the manufacturer's installation instructions.<br><br>
+							<strong>Explanation:</strong><br>{{form.built_in_clearance_exp}}<br><br>
+						{% endif %}
+						{% if form.glass_door_condition != '' %}
+							<strong>Glass Door Condition:</strong> {{form.glass_door_condition}}<br>
+							{% if form.glass_door_condition == 'Does Not Meets Industry Standards' %}
+								<strong>Explanation:</strong><br>{{form.glass_door_condition_exp}}<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.built_in_gas_connection == 'Yes' %}
+							<strong>Your fireplace is operated with Gas system</strong><br>
+							<strong>Gas Starter Type:</strong> {{form.gas_starter_type}}<br>
+							{% if form.gas_starter_type != '' %}
+								<strong>Gas Line / Burner Condition:</strong> {{form.gas_line_burner}}<br>
+								{% if form.gas_line_burner == 'Does Not Meets Industry Standards' %}
+									<strong>INSPECTION FAILED DUE TO SAFETY ISSUE</strong><br>
+									G2417 (406) - Inspection, Testing, and Purging: The entire piping system shall be inspected and tested for leaks before being placed in operation.<br><br>								
+									<strong>Gas Line / Burner Repair Needs:</strong><br>
+									<ul>
+									{% for gaslinerepair in form_raw.gas_line_burner_repair_needs %}
+										<li>{{ gaslinerepair }}</li>
+									{% endfor %}
+									</ul>
+									{% if form.other_gas_line_burner_repair_needs != '' %}
+										<strong>Other Gas Line / Burner Repair Needs:</strong><br>{{form.other_gas_line_burner_repair_needs}}<br><br>
+									{% endif %}
+								{% endif %}
+							{% endif %}
+							{% if form.gas_starter_type != '' and form.gas_starter_type == 'Remote / Pilot Light Starter' %}
+								<strong>Gas Valve Condition:</strong> {{form.gas_valve_condition}}<br>
+								{% if form.gas_valve_condition == 'Does Not Meets Industry Standards' %}
+									<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+									Adhere to the manufacturer’s installation and maintenance instructions for gas valves.<br><br>
+									<strong>Explanation:</strong><br>{{form.gas_valve_condition_exp}}<br><br>
+								{% endif %}
+								<strong>Pilot Light Condition:</strong> {{form.pilot_light_condition}}<br>
+								{% if form.pilot_light_condition == 'Does Not Meets Industry Standards' %}
+									<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+									Always follow the specific installation and maintenance instructions provided by the manufacturer for gas appliances with pilot lights.<br><br>
+									<strong>Explanation:</strong><br>{{form.pilot_light_condition_exp}}<br><br>
+								{% endif %}
+								<strong>Thermocouple Condition:</strong> {{form.thermocouple_condition}}<br>
+								{% if form.thermocouple_condition == 'Does Not Meets Industry Standards' %}
+									<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+									Thermocouples should be installed and replaced according to the manufacturer's instructions to ensure proper operation.<br><br>
+									<strong>Explanation:</strong><br>{{form.thermocouple_condition_exp}}<br><br>
+								{% endif %}
+								<strong>Remote System Condition:</strong> {{form.remote_system_condition}}<br>
+								{% if form.remote_system_condition == 'Needs Attention' %}
+									<strong>Explanation:</strong><br>{{form.remote_system_condition_exp}}<br><br>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+						{% if form.built_in_gas_connection != '' %}
+							<strong>Refractory Panels Condition:</strong> {{form.refractory_panles_codtition}}<br>
+							{% if form.refractory_panles_codtition == 'Cracked / Missing' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								For factory-built fireplaces, always follow the manufacturer’s instructions regarding the maintenance, repair, and replacement of refractory panels.<br><br>
+							{% endif %}
+							{% if form.system_vented == 'Yes' %}
+								<strong>Damper:</strong> {{form.built_in_damper}}<br>
+								{% if form.built_in_damper == 'Does Not Meets Industry Standards' %}
+									<strong>Damper Repair Needs:</strong><br>
+									<ul>
+									{% for builtindamperrepair in form_raw.built_in_damper_repair_needs %}
+										<li>{{ builtindamperrepair }}</li>
+									{% endfor %}
+									</ul>
+									{% if form.other_built_in_damper_repair_needs != '' %}
+										<strong>Other Damper Repair Need:</strong><br>{{form.other_built_in_damper_repair_needs}}<br><br>
+									{% endif %}
+									{% if form_raw.damper_repair_needs != '' %}
+										<strong>INSPECTION FAILED BY CODE R1001.7.1 DAMPER</strong><br>
+										All fireplaces shall be equipped with a ferrous metal damper located not less than 8 inches (203 mm) above the top of the fireplace opening. Dampers shall be installed in the fireplace or the chimney venting the fireplace, and shall be operable from the room containing the fireplace.<br><br>
+									{% endif %}
+								{% endif %}
+								<strong>Soot Condition:</strong> {{form.built_in_soot}}<br>
+								{% if form.built_in_soot != '' and form.built_in_soot != 'Cleaned / Swept' %}
+									<strong>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</strong><br>
+									Chimneys, fireplaces, and vents shall be inspected at least once a year for soundness, freedom from deposits, and correct clearances. Cleaning, maintenance, and repairs shall be done if necessary.<br><br>
+								{% endif %}
+								<strong>Chimney Liner:</strong> {{form.chimney_liner}}<br>
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+									<strong>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</strong><br>
+									All chimneys shall be lined. The lining material shall be appropriate for the type of appliance connected, in accordance with the terms of the appliance listing and manufacturer’s instructions.<br><br>
+								{% endif %}
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' %}
+									<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
+		{% if form.system_type == 'Wood Stove' %}
+			<div class="row">
+				<div class="col-2-70">
+					<h2>System Type: {{form.system_type}}</h2>
+					<p>
+						<strong>Wood Stove Type:</strong> {{form.wood_stove_type}}<br>
+						{% if form.wood_stove_type != '' %}
+							<strong>Stove Clearance to Combustibles:</strong> {{form.stove_ctc}}<br>
+							{% if form.stove_ctc == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE NFPA 211 CLEARANCES RECOMMENDATION</strong><br>
+								If the manufacturer’s instructions are not available, maintain a general clearance of at least 18 inches (457 mm) from combustible materials. For older, unlisted stoves, NFPA 211 recommends a clearance of 36 inches (914 mm).<br><br>
+								<strong>Explanation:</strong><br>{{form.stove_ctc_exp}}<br><br>
+							{% endif %}
+							<strong>Stove Condition:</strong> {{form.stove_condition}}<br>
+							{% if form.stove_condition == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								Adhere strictly to the manufacturer's specifications for all aspects of installation and operation.<br><br>
+								<strong>Explanation:</strong><br>{{form.stove_condition_exp}}<br><br>
+							{% endif %}
+						{% endif %}
+					</p>
+				</div>
+				<div class="col-2-30">
+					<h2>Wood Stove Image</h2>
+					<img class="img-file" src="{{form_raw.wood_stove_img}}">
+				</div>
+			</div>
+			<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					<p>
+						{% if form.wood_stove_type == 'Free Standing' %}
+							<strong>Free Standing Pipe Circumference:</strong> {{form.free_standing_pipes_circumference}}<br>
+							{% if form.free_standing_pipes_circumference != '' %}
+								<strong>Free Standing Pipe Diameter:</strong> {{form.free_standing_pipes_diameter}}<br>
+							{% endif %}
+							<strong>Free Standing Pipes Connection:</strong> {{form.fs_pipes_connections}}<br>
+							{% if form.fs_pipes_connections == 'Unsealed / Unconnected' %}
+								<strong>INSPECTION FAILED BY CODE 501.7.1 CLOSURE AND ACCESS</strong><br>
+								A noncombustible seal shall be provided below the point of connection to prevent entry of room air into the flue.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.wood_stove_type != '' %}
+							<strong>Soot Condition:</strong> {{form.stove_soot_condtion}}<br>
+							{% if form.stove_soot_condtion != '' and form.stove_soot_condtion != 'Cleaned / Swept' %}
+								<strong>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</strong><br>
+								Chimneys, fireplaces, and vents shall be inspected at least once a year for soundness, freedom from deposits, and correct clearances. Cleaning, maintenance, and repairs shall be done if necessary.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.wood_stove_type == 'Free Standing' %}
+							<strong>Flue Ventilation Type:</strong> {{form.flue_ventilation_type_2}}<br>
+							{% if form.flue_ventilation_type_2 == 'Masonry / Bricks' %}
+								<strong>Chimney Liner:</strong> {{form.chimney_liner}}<br>
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+									<strong>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</strong><br>
+									All chimneys shall be lined. The lining material shall be appropriate for the type of appliance connected, in accordance with the terms of the appliance listing and manufacturer’s instructions.<br><br>
+								{% endif %}
+								{% if form.chimney_liner == 'Does Not Meets Industry Standards' %}
+									<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+								{% endif %}
+							{% endif %}
+						{% endif %}
+						{% if form.wood_stove_type == 'Insert' %}
+							<strong>Chimney Liner:</strong> {{form.chimney_liner}}<br>
+							{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+								<strong>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</strong><br>
+								All chimneys shall be lined. The lining material shall be appropriate for the type of appliance connected, in accordance with the terms of the appliance listing and manufacturer’s instructions.<br><br>
+							{% endif %}
+							{% if form.chimney_liner == 'Does Not Meets Industry Standards' %}
+								<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+							{% endif %}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
+		{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type != '' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Wood Stove' %}
+			<div class="row">
+				<div class="col-1">
+					<p>
+						<strong>Chimney Height From Roof Line:</strong> {{form.chimney_height_from_roof_line}}<br>
+						{% if form.chimney_height_from_roof_line == 'Does Not Meets Industry Standards' %}
+							<strong>INSPECTION FAILED BY CODE R1003.9 TERMINATION</strong><br>
+							Chimneys shall extend not less than 2 feet (610 mm) higher than any portion of a building within 10 feet (3048 mm), but shall be not less than 3 feet (914 mm) above the highest point where the chimney passes through the roof.<br><br>
+						{% endif %}
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Masonry / Bricks' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Siding Covered' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type_2 == 'Masonry / Bricks' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.wood_stove_type == 'Insert' %}
+							<strong>Chimney Cricket:</strong> {{form.chimney_cricket}}<br>
+							{% if form.chimney_cricket == 'Does Not Meets Industry Standards' or form.chimney_cricket == 'Chimney Needs Cricket' %}
+								<strong>INSPECTION FAILED BY CODE R1003.20 CHIMNEY CRICKETS</strong><br>
+								Chimneys shall be provided with crickets where the dimension parallel to the ridgeline is greater than 30 inches (762 mm) and does not intersect the ridgeline. The intersection of the cricket and the chimney shall be flashed and counter flashed in the same manner as normal roof-chimney intersections. Crickets shall be constructed in compliance with Figure R1003.20 and Table R1003.20.<br><br>
+							{% endif %}
+						{% endif %}						
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type != '' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Wood Stove' %}
+							<strong>Flushing Condition:</strong> {{form.flushing_condition}}<br>
+							{% if form.flushing_condition == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY CODE R903.2 FLUSHING</strong><br>
+								Flashings shall be used to seal roofing systems, where the system is interrupted or terminated and shall be installed in a manner that prevents moisture from entering the wall and roof through joints in copings, through moisture permeable materials and at intersections with parapet walls and other penetrations through the roof plane.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Siding Covered' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' %}
+							<strong>Chimney Siding Cover Condition:</strong> {{form.chimney_siding_cover_condition}}<br>
+							{% if form.chimney_siding_cover_condition == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								Ensure that the materials and installation methods follow the manufacturer’s guidelines and comply with code requirements.<br><br>
+							{% endif %}
+							<strong>Chase Covering Condition:</strong> {{form.chase_covering_condition}}<br>
+							{% if form.chase_covering_condition == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								Ensure that the chase cover is installed according to the manufacturer's instructions and meets code requirements.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Roof Metal Pipe' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Side Wall Metal Pipe' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type_2 == 'Single Wall Metal Pipe' %}
+							<strong>Exterior Pipe Condition:</strong> {{form.exterior_pipe_condition}}<br>
+							{% if form.exterior_pipe_condition == 'Unsealed / Unconnected' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								Ensure that the chase cover is installed according to the manufacturer's instructions and meets code requirements.<br><br>
+							{% endif %}
+							{% if form.exterior_pipe_condition == 'Other' %}
+								<strong>Explanation:</strong><br>{{form.chimney_liner_explanation}}<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Masonry / Bricks' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type_2 == 'Masonry / Bricks' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.wood_stove_type == 'Insert' %}
+							<strong>Masonry Work Condition:</strong> {{form.masonry_work_condition}}<br>
+							{% if form.masonry_work_condition == 'Does Not Meets Industry Standards' %}
+								<strong>Masonry Work Issues:</strong><br>
+								<ul>
+								{% for masonry in form_raw.masonry_work_issues %}
+									<li>{{ masonry }}</li>
+								{% endfor %}
+								</ul>
+								{% if form.other_masonry_issue != '' %}
+									<strong>Other Masonry Issue:</strong><br>{{form.other_masonry_issue}}<br><br>
+								{% endif %}
+								{% if form_raw.masonry_work_issues != '' %}
+									<strong>INSPECTION FAILED BY CODE 1926.706(b)</strong><br>
+									All masonry walls over eight feet in height shall be adequately braced to prevent overturning and to prevent collapse unless the wall is adequately supported so that it will not overturn or collapse. The bracing shall remain in place until permanent supporting elements of the structure are in place.<br><br>
+								{% endif %}
+							{% endif %}
+							<strong>Chimney Crown Condition:</strong> {{form.chimney_crown_condition}}<br>
+							{% if form.chimney_crown_condition == 'Does Not Meets Industry Standards' or form.chimney_crown_condition == 'Crown Does Not Exist' %}
+								<strong>INSPECTION FAILED BY CODE R1003.9.1 CHIMNEY CAP/CROWN</strong><br>
+								Refer to IRC R1003.9.1 for specific requirements regarding chimney crowns. Ensure all construction and installation practices comply with these guidelines.<br><br>
+							{% endif %}
+							<strong>Chimney Rain Cap:</strong> {{form.chimney_rain_cap}}<br>
+							{% if form.chimney_rain_cap == 'Does Not Meets Industry Standards' or form.chimney_rain_cap == 'Chimney Cap Does Not Exist' %}
+								<strong>INSPECTION FAILED BY CODE R1003.9.1 CHIMNEY CAPS</strong><br>
+								Masonry chimneys shall have a concrete, metal or stone cap, a drip edge and a caulked bond break around any flue liners in accordance with ASTM C1283. The concrete, metal or stone cap shall be sloped to shed water.<br><br>
+							{% endif %}
+						{% endif %}
+						{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Roof Metal Pipe' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Siding Covered' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type == 'Side Wall Metal Pipe' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type_2 == 'Single Wall Metal Pipe' %}
+							<strong>Chimney Spark Arrestor:</strong> {{form.chimney_spark_arrestor}}<br>
+							{% if form.chimney_spark_arrestor == 'Spark Arrestor Does Not Exist' %}
+								<strong>INSPECTION FAILED BY CODE R1003.9.1 SPARK ARRESTOR SCREEN</strong><br>
+								The spark arrestor screen shall be constructed of corrosion-resistant material and shall be installed at the termination of a chimney flue or vent to prevent the escape of sparks and embers.<br><br>
+							{% endif %}
+							{% if form.chimney_spark_arrestor == 'Does Not Meets Industry Standards' %}
+								<strong>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</strong><br>
+								Ensure that the spark arrestor is installed according to the manufacturer's instructions and meets code requirements.<br><br>
+							{% endif %}
+						{% endif %}
+					</p>
+				</div>
+			</div>
+		{% endif %}
+		{% if form.inspector_note != '' %}
+			<div class="row">
+				<div class="col-1">
+					<h2>Note From Your Inspector: {{current_user.name}}</h2>
+					<p>{{form.inspector_note}}</p>
+				</div>
+			</div>
+		{% endif %}
+		
+		{% if form_raw.furnace_visual_inspection_img != '' or form_raw.furnace_clearance_img != '' or form_raw.pipe_clearance_img != '' or form_raw.furnace_pipes_connection_img != '' or form_raw.furnace_pipe_soot_condition_img != '' or form_raw.boiler_pipes_connection_img != '' or form_raw.other_boiler_pipes_condition_img != '' or form_raw.cleanout_door_img_1 != '' or form_raw.hearth_extension_img != '' or form_raw.fireplace_clearance_to_combustibles_img != '' or form_raw.fireplace_glass_door_img != '' or form_raw.firebox_img != '' or form_raw.ash_dump_img != '' or form_raw.gas_line_img != '' or form_raw.damper_img != '' or form_raw.smoke_chamber_img != '' or form_raw.masonry_soot_img != '' or form_raw.fireplace_model_img != '' or form_raw.built_in_hearth_img != '' or form_raw.built_in_clearance_img != '' or form_raw.glass_door_condition_img != '' or form_raw.gas_line_burner_img != '' or form_raw.gas_valve_condition_img != '' or form_raw.pilot_light_condition_img != '' or form_raw.thermocouple_condition_img != '' or form_raw.refractory_panles_codtition_img != '' or form_raw.built_in_damper_img != '' or form_raw.built_in_soot_img != '' or form_raw.stove_ctc_img != '' or form_raw.stove_condition_img != '' or form_raw.fs_pipes_connection_img != '' or form_raw.stove_soot_condtion_img != '' or form_raw.chimney_liner_img != '' or form_raw.exterior_chimney_type_img != '' or form_raw.chimney_height_from_roof_line_img != '' or form_raw.chimney_cricket_img != '' or form_raw.flushing_condition_img != '' or form_raw.chimney_siding_cover_condition_img != '' or form_raw.chase_covering_condition_img != '' or form_raw.exterior_pipe_condition_img != '' or form_raw.masonry_work_img != '' or form_raw.chimney_crown_img != '' or form_raw.chimney_rain_cap_img != '' or form_raw.chimney_spark_arrestor_img != '' %}
+			<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					{% if form.furnace_visual_inspection == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Visual Furnace Inspection</h3><img class="img-file-2" src="{{form_raw.furnace_visual_inspection_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.furnace_clearance == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Furnace Clearance to Combustibles</h3><img class="img-file-2" src="{{form_raw.furnace_clearance_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Pipe Clearance to Combustibles</h3><img class="img-file-2" src="{{form_raw.pipe_clearance_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.furnace_pipes_connection != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Furnace Pipes Connection</h3><img class="img-file-2" src="{{form_raw.furnace_pipes_connection_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.furnace_pipe_soot_condition != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Furnace Pipes Soot Condition</h3><img class="img-file-2" src="{{form_raw.furnace_pipe_soot_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.boiler_pipe_connection != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Boiler Pipes Connection</h3><img class="img-file-2" src="{{form_raw.boiler_pipes_connection_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.other_boiler_pipes_condition != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Other Boiler Pipes Condition Image</h3><img class="img-file-2" src="{{form_raw.other_boiler_pipes_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.cleanout_door_1 != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Cleanout Door</h3><img class="img-file-2" src="{{form_raw.cleanout_door_img_1}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.hearth_extension_regulation != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Hearth Extension</h3><img class="img-file-2" src="{{form_raw.hearth_extension_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.fireplace_clearance_to_combustibles == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Fireplace Clearance to Combustibles</h3><img class="img-file-2" src="{{form_raw.fireplace_clearance_to_combustibles_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.fireplace_glass_door == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Fireplace Glass Door</h3><img class="img-file-2" src="{{form_raw.fireplace_glass_door_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.firebox_repair_needs != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Firebox</h3><img class="img-file-2" src="{{form_raw.firebox_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.ash_dump == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Ash Dump</h3><img class="img-file-2" src="{{form_raw.ash_dump_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.gas_line_repair_needs != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Gas Line</h3><img class="img-file-2" src="{{form_raw.gas_line_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.damper_repair_needs != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Damper</h3><img class="img-file-2" src="{{form_raw.damper_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.smoke_chamber == 'Does Not Parged Smooth' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Smoke Chamber</h3><img class="img-file-2" src="{{form_raw.smoke_chamber_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.masonry_soot != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Soot Condition</h3><img class="img-file-2" src="{{form_raw.masonry_soot_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.fireplace_model_img != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Fireplace Model</h3><img class="img-file-2" src="{{form_raw.fireplace_model_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.built_in_hearth == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Fireplace Hearth Extensions</h3><img class="img-file-2" src="{{form_raw.built_in_hearth_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.built_in_clearance == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Fireplace Clearance to Combustibles</h3><img class="img-file-2" src="{{form_raw.built_in_clearance_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.glass_door_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Glass Door Condition</h3><img class="img-file-2" src="{{form_raw.glass_door_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.gas_line_burner_repair_needs != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Gas Line / Burner</h3><img class="img-file-2" src="{{form_raw.gas_line_burner_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.gas_valve_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Gas Valve Condition</h3><img class="img-file-2" src="{{form_raw.gas_valve_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.pilot_light_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Pilot Light Condition</h3><img class="img-file-2" src="{{form_raw.pilot_light_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.thermocouple_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Thermocouple Condition</h3><img class="img-file-2" src="{{form_raw.thermocouple_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.refractory_panles_codtition == 'Cracked / Missing' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Refractory Panels Condition</h3><img class="img-file-2" src="{{form_raw.refractory_panles_codtition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form_raw.built_in_damper_repair_needs != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Damper</h3><img class="img-file-2" src="{{form_raw.built_in_damper_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.built_in_soot != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Soot Condition</h3><img class="img-file-2" src="{{form_raw.built_in_soot_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.stove_ctc == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Stove Clearance to Combustibles</h3><img class="img-file-2" src="{{form_raw.stove_ctc_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.stove_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Stove Condition</h3><img class="img-file-2" src="{{form_raw.stove_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.fs_pipes_connections != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Free Standing Pipes Connection</h3><img class="img-file-2" src="{{form_raw.fs_pipes_connection_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.stove_soot_condtion != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Stove Soot Condition</h3><img class="img-file-2" src="{{form_raw.stove_soot_condtion_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Liner</h3><img class="img-file-2" src="{{form_raw.chimney_liner_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.flue_ventilation_type != '' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Masonry Fireplace' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_vented == 'Yes' or form.inspection_level != '' and form.inspection_level != 'Inspection Level 1' and form.system_type == 'Wood Stove' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Exterior Chimney Type</h3><img class="img-file-2" src="{{form_raw.exterior_chimney_type_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_height_from_roof_line == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Height From Roof Line</h3><img class="img-file-2" src="{{form_raw.chimney_height_from_roof_line_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_cricket == 'Does Not Meets Industry Standards' or form.chimney_cricket == 'Chimney Needs Cricket' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Cricket</h3><img class="img-file-2" src="{{form_raw.chimney_cricket_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.flushing_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Flushing Condition</h3><img class="img-file-2" src="{{form_raw.flushing_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_siding_cover_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Siding Cover</h3><img class="img-file-2" src="{{form_raw.chimney_siding_cover_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chase_covering_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chase Covering Condition</h3><img class="img-file-2" src="{{form_raw.chase_covering_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.exterior_pipe_condition != '' and form.exterior_pipe_condition == 'Unsealed / Unconnected' or form.exterior_pipe_condition != '' and form.exterior_pipe_condition == 'Other' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Exterior Pipe Condition</h3><img class="img-file-2" src="{{form_raw.exterior_pipe_condition_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.masonry_work_condition == 'Does Not Meets Industry Standards' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Masonry Work</h3><img class="img-file-2" src="{{form_raw.masonry_work_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_crown_condition != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Crown</h3><img class="img-file-2" src="{{form_raw.chimney_crown_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_rain_cap != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Rain Cap</h3><img class="img-file-2" src="{{form_raw.chimney_rain_cap_img}}">
+						</div>
+					</div>
+					{% endif %}
+					{% if form.chimney_spark_arrestor != '' %}
+					<div class="col-3">
+						<div class="image-block">
+							<h3>Chimney Spark Arrestor</h3><img class="img-file-2" src="{{form_raw.chimney_spark_arrestor_img}}">
+						</div>
+					</div>
+					{% endif %}
+				</div>
+			</div>
+		{% endif %}
+		<pagebreak></pagebreak>
+		<div class="row">
+			<div class="col-1">
+				<h2>A1 Chimney Inspection Report Terms and Conditions</h2>
+				<p>
+				<strong>1. Introduction</strong><br>
+				These terms and conditions ("Terms") govern the use of the inspection report ("Report") provided by A1 Chimney ("Company", "we", "us", or "our"). By accepting and using the Report, the client ("Client", "you", or "your") agrees to be bound by these Terms. If you do not agree to these Terms, please do not use the Report.<br><br>
+				<strong>2. Scope of the Report</strong><br>
+				2.1 The Report is prepared based on a visual inspection of the accessible areas and systems of the chimney on the date of the inspection.<br>
+				2.2 The Report is intended to provide an overview of the condition of the chimney and is not an exhaustive list of every potential issue or defect.<br>
+				2.3 The Report is not a warranty or guarantee of any kind regarding the condition of the chimney, and the Company does not assume any liability for any issues not identified in the Report.<br><br>
+				<strong>3. Limitations and Exclusions</strong><br>
+				3.1 The inspection and the Report are limited to the visible and accessible areas of the chimney. Concealed or inaccessible areas are not included in the inspection.<br>
+				3.2 The inspection does not cover areas that require the dismantling of components, destructive testing, or specialized equipment to access.<br>
+				3.3 The Report does not include an evaluation of environmental hazards, such as asbestos, lead, mold, radon, or other contaminants, unless specifically agreed upon and documented in the inspection agreement.<br>
+				3.4 The inspection and Report do not include an assessment of compliance with building codes, zoning laws, or other regulations.<br><br>
+				<strong>4. Client Responsibilities</strong><br>
+				4.1 The Client is responsible for providing the Company with accurate and complete information regarding the chimney to be inspected.<br>
+				4.2 The Client must ensure that the Company has safe and unobstructed access to the chimney and its systems.<br>
+				4.3 The Client should carefully review the Report and promptly notify the Company of any questions or concerns.<br><br>
+				<strong>5. Fees and Payment</strong><br>
+				5.1 The fees for the inspection services are as agreed upon between the Client and the Company and must be paid in full prior to the delivery of the Report.<br>
+				5.2 Any additional services requested by the Client that are outside the scope of the initial agreement may incur additional charges.<br><br>
+				<strong>6. Limitation of Liability</strong><br>
+				6.1 To the fullest extent permitted by law, the Company’s total liability to the Client for any claims arising out of or related to the inspection or the Report is limited to the amount paid by the Client for the inspection services.<br>
+				6.2 The Company is not liable for any indirect, incidental, special, or consequential damages, including but not limited to lost profits, loss of use, or any other economic loss.<br><br>
+				<strong>7. Dispute Resolution</strong><br>
+				7.1 Any disputes arising out of or related to these Terms or the inspection services provided by the Company shall be resolved through mediation. If mediation is unsuccessful, the dispute shall be resolved through binding arbitration in accordance with the rules of [arbitration organization], to be conducted in {{form.city}}, {{form.state}}.<br><br>
+				<strong>8. Governing Law</strong><br>
+				These Terms are governed by and construed in accordance with the laws of the State of {{form.state}}, without regard to its conflict of law principles.<br><br>
+				<strong>9. Amendments</strong><br>
+				The Company reserves the right to amend these Terms at any time. Any amendments will be effective immediately upon posting the updated Terms on the Company’s website or otherwise notifying the Client.<br><br>
+				<strong>10. Acceptance of Terms</strong><br>
+				By accepting and using the Report, the Client acknowledges that they have read, understood, and agreed to be bound by these Terms.
+				</p>
+			</div>
+		</div>
+		<div class="row">
+			<div class="signatures">
+				{% if form.on_site_client == 'Yes' %}
+					<div class="col-50-l">
+						<p>
+							<strong>Client Signature:</strong><br><img class="sign" style="text-decoration: underline;" src="{{form_raw.client_signature}}"><br>
+							<strong>Date:</strong><br><span style="text-decoration: underline;">{{'now'|date('m/d/Y')}}</span>
+						</p>
+					</div>
+				{% endif %}
+				{% if form.on_site_client == 'No' %}
+					<div class="col-50-l">
+						<p>
+							<strong>Client Signature:</strong><br>____________________<br>
+							<strong>Date:</strong><br>____________________
+						</p>
+					</div>
+				{% endif %}
+				<div class="col-50-r">
+					<p>
+						<strong>Inspector Signature:</strong><br><img class="sign" style="text-decoration: underline;" src="{{form_raw.inspector_signature}}"><br>
+						<strong>Date:</strong><br><span style="text-decoration: underline;">{{'now'|date('m/d/Y')}}</span>
+					</p>
+				</div>
+			</div>
+		</div>
+		{% if form.burning_type == 'Gas / Oil Burner' and form.furnace_clearance == 'Does Not Meets Industry Standards' or form.burning_type == 'Solid Fuel' and form.furnace_clearance == 'Does Not Meets Industry Standards' or form.burning_type == 'Wood Burning' and form.furnace_clearance == 'Does Not Meets Industry Standards' or form.furnace_piping_type == 'B-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' or form.furnace_piping_type == 'L-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' or form.furnace_piping_type == 'Direct Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' or form.furnace_piping_type == 'Single Wall Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' or form.furnace_pipes_connection == 'Unsealed / Unconnected' or form.furnace_pipe_soot_condition != '' and form.furnace_pipe_soot_condition != 'Cleaned / Swept' or form.boiler_pipe_connection == 'Unsealed / Unconnected' or form.cleanout_door_1 == 'Untight-Fitting / Combustible Cover' or form.f_depth != '' and form.f_depth < 20 or form.hearth_extension_regulation == 'No' or form.fireplace_clearance_to_combustibles == 'Does Not Meets Industry Standards' or form.firebox_condition == 'Does Not Meets Industry Standards' or form.ash_dump == 'Does Not Meets Industry Standards' or form.damper == 'Does Not Meets Industry Standards' or form.smoke_chamber == 'Does Not Parged Smooth' or form.masonry_soot != '' and form.masonry_soot != 'Cleaned / Swept' or form.built_in_hearth == 'Does Not Meets Industry Standards' or form.built_in_clearance == 'Does Not Meets Industry Standards' or form.gas_line_burner == 'Does Not Meets Industry Standards' or form.gas_valve_condition == 'Does Not Meets Industry Standards' or form.pilot_light_condition == 'Does Not Meets Industry Standards' or form.thermocouple_condition == 'Does Not Meets Industry Standards' or form.refractory_panles_codtition == 'Cracked / Missing' or form.built_in_damper == 'Does Not Meets Industry Standards' or form.masonry_soot != '' and form.masonry_soot != 'Cleaned / Swept' or form.stove_ctc == 'Does Not Meets Industry Standards' or form.stove_condition == 'Does Not Meets Industry Standards' or form.fs_pipes_connections == 'Unsealed / Unconnected' or form.stove_soot_condtion != '' and form.stove_soot_condtion != 'Cleaned / Swept' or form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' or form.chimney_height_from_roof_line == 'Does Not Meets Industry Standards' or form.chimney_cricket == 'Does Not Meets Industry Standards' or form.chimney_cricket == 'Chimney Needs Cricket' or form.flushing_condition == 'Does Not Meets Industry Standards' or form.chimney_siding_cover_condition == 'Does Not Meets Industry Standards' or form.chase_covering_condition == 'Does Not Meets Industry Standards' or form.exterior_pipe_condition == 'Unsealed / Unconnected' or form_raw.masonry_work_issues != '' or form.chimney_crown_condition == 'Does Not Meets Industry Standards' or form.chimney_crown_condition == 'Crown Does Not Exist' or form.chimney_rain_cap == 'Does Not Meets Industry Standards' or form.chimney_rain_cap == 'Chimney Cap Does Not Exist' or form.chimney_spark_arrestor == 'Spark Arrestor Does Not Exist' or form.chimney_spark_arrestor == 'Does Not Meets Industry Standards' %}
+		<pagebreak></pagebreak>
+			<div class="row">
+				<div class="col-1">
+					<h2>Inspection Report Summary</h2>
+					<table>
+						<thead>
+							<tr>
+								<th>Item</th>
+								<th>Status</th>
+								<th>Standard / Code</th>
+							</tr>
+						</thead>
+						<tbody>
+							{% if form.burning_type == 'Gas / Oil Burner' and form.furnace_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Furnace Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE CODE 603.5.3.1 GAS OR FUEL-OIL HEATERS</td>
+								</tr>
+							{% endif %}
+							{% if form.burning_type == 'Solid Fuel' and form.furnace_clearance == 'Does Not Meets Industry Standards' or form.burning_type == 'Wood Burning' and form.furnace_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Furnace Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE CODE 603.5.3.2 SOLID FUEL-BURNING HEATERS</td>
+								</tr>
+							{% endif %}
+							{% if form.furnace_piping_type == 'B-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' or form.furnace_piping_type == 'L-Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Pipe Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE M1803.3.4 CLEARANCE</td>
+								</tr>
+							{% endif %}
+							{% if form.furnace_piping_type == 'Direct Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Pipe Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE M1804.2.6</td>
+								</tr>
+							{% endif %}
+							{% if form.furnace_piping_type == 'Single Wall Vent' and form.pipe_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Pipe Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE G2427.7.8 SINGLE-WALL METAL PIPE</td>
+								</tr>
+							{% endif %}
+							{% if form.furnace_pipes_connection == 'Unsealed / Unconnected' %}
+								<tr>
+									<td>Furnace Pipe Connection</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE 501.7.1 CLOSURE AND ACCESS</td>
+								</tr>
+							{% endif %}
+							{% if form.furnace_pipe_soot_condition != '' and form.furnace_pipe_soot_condition != 'Cleaned / Swept' %}
+								<tr>
+									<td>Furnace Pipes Soot Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</td>
+								</tr>
+							{% endif %}
+							{% if form.boiler_pipe_connection == 'Unsealed / Unconnected' %}
+								<tr>
+									<td>Boiler Pipes Connection</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE M1803.4.1 CLOSURE AND ACCESSIBILITY</td>
+								</tr>
+							{% endif %}
+							{% if form.cleanout_door_1 == 'Untight-Fitting / Combustible Cover' %}
+								<tr>
+									<td>Cleanout Door</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE 501.15.3 CLEANOUT</td>
+								</tr>
+							{% endif %}
+							{% if form.f_depth != '' and form.f_depth < 20 %}
+								<tr>
+									<td>Fireplace Square Foot Dimensions</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.6 FIREBOX DIMENSIONS</td>
+								</tr>
+							{% endif %}
+							{% if form.hearth_extension_regulation == 'No' %}
+								<tr>
+									<td>Hearth Extension Dimensions</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.10 HEARTH EXTENSION DIMENSIONS</td>
+								</tr>
+							{% endif %}
+							{% if form.fireplace_clearance_to_combustibles == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Fireplace Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.11 CLEARANCES</td>
+								</tr>
+							{% endif %}
+							{% if form.firebox_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Firebox Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.5 FIREBOX WALLS</td>
+								</tr>
+							{% endif %}
+							{% if form.ash_dump == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Ash Dump</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.2.1 ASH DUMP CLEANOUT</td>
+								</tr>
+							{% endif %}
+							{% if form.damper == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Damper</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.7.1 DAMPER</td>
+								</tr>
+							{% endif %}
+							{% if form.smoke_chamber == 'Does Not Parged Smooth' %}
+								<tr>
+									<td>Smoke Chamber</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.8 SMOKE CHAMBER</td>
+								</tr>
+							{% endif %}
+							{% if form.masonry_soot != '' and form.masonry_soot != 'Cleaned / Swept' %}
+								<tr>
+									<td>Soot Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</td>
+								</tr>
+							{% endif %}
+							{% if form.built_in_hearth == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Fireplace Hearth Extensions</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1004.2 HEARTH EXTENSIONS</td>
+								</tr>
+							{% endif %}
+							{% if form.built_in_clearance == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Fireplace Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1004.3 CLEARANCES</td>
+								</tr>
+							{% endif %}
+							{% if form.gas_line_burner == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Gas Line / Burner Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED DUE TO SAFETY ISSUE</td>
+								</tr>
+							{% endif %}
+							{% if form.gas_valve_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Gas Valve Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.pilot_light_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Pilot Light Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.thermocouple_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Thermocouple Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.refractory_panles_codtition == 'Cracked / Missing' %}
+								<tr>
+									<td>Refractory Panels Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.built_in_damper == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Damper</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1001.7.1 DAMPER</td>
+								</tr>
+							{% endif %}
+							{% if form.stove_ctc == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Stove Clearance to Combustibles</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE NFPA 211 CLEARANCES RECOMMENDATION</td>
+								</tr>
+							{% endif %}
+							{% if form.stove_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Stove Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.fs_pipes_connections == 'Unsealed / Unconnected' %}
+								<tr>
+									<td>Free Standing Pipes Connection</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE 501.7.1 CLOSURE AND ACCESS</td>
+								</tr>
+							{% endif %}
+							{% if form.stove_soot_condtion != '' and form.stove_soot_condtion != 'Cleaned / Swept' %}
+								<tr>
+									<td>Soot Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE NATIONAL FIRE PROTECTION ASSOCIATION (NFPA) STANDARD 211</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_liner == 'Does Not Meets Industry Standards' or form.chimney_liner == 'Liner Does Not Exist' %}
+								<tr>
+									<td>Chimney Liner</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.11 FLUE LINING (MATERIAL)</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_height_from_roof_line == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Chimney Height From Roof Line</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.9 TERMINATION</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_cricket == 'Does Not Meets Industry Standards' or form.chimney_cricket == 'Chimney Needs Cricket' %}
+								<tr>
+									<td>Chimney Cricket</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.20 CHIMNEY CRICKETS</td>
+								</tr>
+							{% endif %}
+							{% if form.flushing_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Flushing Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R903.2 FLUSHING</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_siding_cover_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Chimney Siding Cover Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.chase_covering_condition == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Chase Covering Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form.exterior_pipe_condition == 'Unsealed / Unconnected' %}
+								<tr>
+									<td>Exterior Pipe Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+							{% if form_raw.masonry_work_issues != '' %}
+								<tr>
+									<td>Masonry Work Issues</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE 1926.706(b)</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_crown_condition == 'Does Not Meets Industry Standards' or form.chimney_crown_condition == 'Crown Does Not Exist' %}
+								<tr>
+									<td>Chimney Crown Condition</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.9.1 CHIMNEY CAP/CROWN</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_rain_cap == 'Does Not Meets Industry Standards' or form.chimney_rain_cap == 'Chimney Cap Does Not Exist' %}
+								<tr>
+									<td>Chimney Rain Cap</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.9.1 CHIMNEY CAPS</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_spark_arrestor == 'Spark Arrestor Does Not Exist' %}
+								<tr>
+									<td>Chimney Spark Arrestor</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY CODE R1003.9.1 SPARK ARRESTOR SCREEN</td>
+								</tr>
+							{% endif %}
+							{% if form.chimney_spark_arrestor == 'Does Not Meets Industry Standards' %}
+								<tr>
+									<td>Chimney Spark Arrestor</td>
+									<td>Failed</td>
+									<td>INSPECTION FAILED BY THE GENERAL SAFETY AND MANUFACTURER GUIDELINES</td>
+								</tr>
+							{% endif %}
+						</tbody>
+					</table>
+				</div>
+			</div>
+		{% endif %}
+	</div>
+	<htmlpagefooter name="myFooter">
+		<div class="footer-container">
+			<div class="recommend"><p>*NFPA 211 recommend getting your chimney cleaned and inspected once a year by a certified professional.</p></div>
+			<div class="contact"><p>Contact us today for annual maintenance program.</p></div>
+			<div class="contact-2"><p>Phone: (888) 984-4344</p></div>
+			<div class="contact-2"><p>Email: info@a-1chimney.com</p></div>
+		</div>
+	</htmlpagefooter>
+</body>

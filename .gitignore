@@ -1,0 +1,93 @@
+# Miscellaneous
+*.class
+*.log
+*.pyc
+*.swp
+.DS_Store
+.atom/
+.build/
+.buildlog/
+.history
+.svn/
+.swiftpm/
+migrate_working_dir/
+
+# IntelliJ related
+*.iml
+*.ipr
+*.iws
+.idea/
+
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+# Symbolication related
+app.*.symbols
+
+# Obfuscation related
+app.*.map.json
+
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+
+# Environment files (contain secrets)
+.env
+api/.env
+*.env.local
+*.env.production
+
+# API folder (contains server-side PHP code with DB credentials)
+/api/
+
+# Installer outputs (large files)
+/installer/output/
+/installer/redist/
+
+# Archive folder (old/backup files)
+/Archive/
+
+# Service helper build artifacts
+/service_helper/build/
+
+# Windows build artifacts (large)
+/build/windows/
+
+# Keystore and signing files
+*.jks
+*.keystore
+key.properties
+upload-keystore.jks
+
+# Credentials and secrets
+**/credentials*.json
+**/secrets*.json
+**/config.local.*
+
+# Claude session files
+.claude/
+
+# iOS has embedded git repo - exclude it
+/ios/
+
+# Reserved Windows filenames
+nul
+con
+prn
+aux
+
+# Large WebView2 runtime files (exceeds GitHub 100MB limit)
+/windows/third_party/WebView2FixedRuntime/

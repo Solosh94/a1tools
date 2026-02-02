@@ -1,0 +1,255 @@
+# A1 Tools - Windows Build Workflow
+# Builds both x64 and ARM64 versions of the app
+#
+# Triggers:
+#   - Manual dispatch (workflow_dispatch) with version input
+#   - Push to 'release/*' branches
+#
+# Outputs:
+#   - A1-Tools-Setup-{version}-x64.exe
+#   - A1-Tools-Setup-{version}-arm64.exe
+
+name: Build Windows Installers
+
+on:
+  workflow_dispatch:
+    inputs:
+      version:
+        description: 'Version number (e.g., 4.2.70)'
+        required: true
+        type: string
+      build_x64:
+        description: 'Build x64 version'
+        required: false
+        type: boolean
+        default: true
+      build_arm64:
+        description: 'Build ARM64 version'
+        required: false
+        type: boolean
+        default: true
+
+  push:
+    branches:
+      - 'release/*'
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+
+env:
+  FLUTTER_VERSION: '3.38.9'
+
+jobs:
+  # ===========================================
+  # Build x64 Version (Intel/AMD)
+  # ===========================================
+  build-x64:
+    name: Build Windows x64
+    runs-on: windows-latest
+    if: ${{ github.event_name == 'push' || inputs.build_x64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+
+      - name: Get version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            # Extract version from pubspec.yaml
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d '\r\n')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows x64
+        run: flutter build windows --release --build-name=${{ steps.version.outputs.version }}
+
+      - name: Download VC++ Redistributable
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path installer\redist
+          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.x64.exe" -OutFile "installer\redist\vc_redist.x64.exe"
+
+      - name: Build Installer with Inno Setup
+        shell: pwsh
+        run: |
+          # Download and install Inno Setup
+          choco install innosetup -y
+
+          # Build the installer
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" `
+            /DMyAppVersion=${{ steps.version.outputs.version }} `
+            /DMyAppExeName=a1_tools.exe `
+            /DOutputBaseFilename=A1-Tools-Setup-${{ steps.version.outputs.version }}-x64 `
+            installer\a1-tools.iss
+
+      - name: Upload x64 Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-x64
+          path: installer/output/A1-Tools-Setup-${{ steps.version.outputs.version }}-x64.exe
+          retention-days: 30
+
+  # ===========================================
+  # Build ARM64 Version (Snapdragon/ARM)
+  # ===========================================
+  build-arm64:
+    name: Build Windows ARM64
+    # Use GitHub's Windows ARM64 runner (available for public repos, or paid Team/Enterprise plans for private)
+    # See: https://github.blog/changelog/2025-04-14-windows-arm64-hosted-runners-now-available-in-public-preview/
+    runs-on: windows-arm64
+    if: ${{ github.event_name == 'push' || inputs.build_arm64 }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup Flutter
+        uses: subosito/flutter-action@v2
+        with:
+          flutter-version: ${{ env.FLUTTER_VERSION }}
+          channel: 'stable'
+          cache: true
+          architecture: arm64
+
+      - name: Get version
+        id: version
+        shell: bash
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            # Extract version from pubspec.yaml
+            VERSION=$(grep '^version:' pubspec.yaml | sed 's/version: //' | tr -d '\r\n')
+            echo "version=$VERSION" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Install dependencies
+        run: flutter pub get
+
+      - name: Build Windows ARM64
+        run: flutter build windows --release --build-name=${{ steps.version.outputs.version }}
+
+      - name: Download VC++ Redistributable (ARM64)
+        shell: pwsh
+        run: |
+          New-Item -ItemType Directory -Force -Path installer\redist
+          Invoke-WebRequest -Uri "https://aka.ms/vs/17/release/vc_redist.arm64.exe" -OutFile "installer\redist\vc_redist.arm64.exe"
+
+      - name: Create ARM64 Installer Script
+        shell: pwsh
+        run: |
+          # Copy the installer script and modify for ARM64
+          $content = Get-Content installer\a1-tools.iss -Raw
+
+          # Update architecture settings
+          $content = $content -replace 'ArchitecturesAllowed=x64', 'ArchitecturesAllowed=arm64'
+          $content = $content -replace 'ArchitecturesInstallIn64BitMode=x64', 'ArchitecturesInstallIn64BitMode=arm64'
+
+          # Update build path from x64 to arm64
+          $content = $content -replace 'build\\windows\\x64\\runner\\Release', 'build\windows\arm64\runner\Release'
+
+          # Update VC++ redist filename
+          $content = $content -replace 'vc_redist\.x64\.exe', 'vc_redist.arm64.exe'
+
+          # Update registry check for ARM64 VC++
+          $content = $content -replace 'VC\\Runtimes\\X64', 'VC\Runtimes\ARM64'
+
+          $content | Set-Content installer\a1-tools-arm64.iss
+
+      - name: Build ARM64 Installer with Inno Setup
+        shell: pwsh
+        run: |
+          # Download and install Inno Setup
+          choco install innosetup -y
+
+          # Build the installer
+          & "C:\Program Files (x86)\Inno Setup 6\ISCC.exe" `
+            /DMyAppVersion=${{ steps.version.outputs.version }} `
+            /DMyAppExeName=a1_tools.exe `
+            /DOutputBaseFilename=A1-Tools-Setup-${{ steps.version.outputs.version }}-arm64 `
+            installer\a1-tools-arm64.iss
+
+      - name: Upload ARM64 Installer
+        uses: actions/upload-artifact@v4
+        with:
+          name: installer-arm64
+          path: installer/output/A1-Tools-Setup-${{ steps.version.outputs.version }}-arm64.exe
+          retention-days: 30
+
+  # ===========================================
+  # Create Release (when both builds complete)
+  # ===========================================
+  create-release:
+    name: Create Release
+    runs-on: ubuntu-latest
+    needs: [build-x64, build-arm64]
+    if: always() && (needs.build-x64.result == 'success' || needs.build-arm64.result == 'success')
+
+    steps:
+      - name: Get version
+        id: version
+        run: |
+          if [ "${{ github.event_name }}" == "workflow_dispatch" ]; then
+            echo "version=${{ inputs.version }}" >> $GITHUB_OUTPUT
+          else
+            echo "version=${GITHUB_REF#refs/heads/release/}" >> $GITHUB_OUTPUT
+          fi
+
+      - name: Download x64 Installer
+        if: needs.build-x64.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-x64
+          path: ./installers
+
+      - name: Download ARM64 Installer
+        if: needs.build-arm64.result == 'success'
+        uses: actions/download-artifact@v4
+        with:
+          name: installer-arm64
+          path: ./installers
+
+      - name: List installers
+        run: ls -la ./installers/
+
+      - name: Create GitHub Release
+        uses: softprops/action-gh-release@v1
+        with:
+          tag_name: v${{ steps.version.outputs.version }}
+          name: A1 Tools v${{ steps.version.outputs.version }}
+          draft: true
+          files: |
+            ./installers/*.exe
+          body: |
+            ## A1 Tools v${{ steps.version.outputs.version }}
+
+            ### Downloads
+
+            | Platform | Download |
+            |----------|----------|
+            | Windows (Intel/AMD) | `A1-Tools-Setup-${{ steps.version.outputs.version }}-x64.exe` |
+            | Windows (ARM/Snapdragon) | `A1-Tools-Setup-${{ steps.version.outputs.version }}-arm64.exe` |
+
+            ### How to choose:
+            - **Most PCs**: Download the **x64** version
+            - **ARM laptops** (Surface Pro X, some HP/Lenovo laptops with Snapdragon): Download the **arm64** version
+
+            Not sure? Run `$env:PROCESSOR_ARCHITECTURE` in PowerShell:
+            - `AMD64` → Download x64
+            - `ARM64` → Download arm64
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
