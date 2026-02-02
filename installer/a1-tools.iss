@@ -55,8 +55,9 @@ OutputBaseFilename=A1-Tools-Setup-{#MyAppVersion}
 ; NOTE: paths below are relative to THIS .iss file (installer\)
 SetupIconFile=..\windows\runner\resources\app_icon.ico
 
-ArchitecturesAllowed=x64
-ArchitecturesInstallIn64BitMode=x64
+; Allow both x64 and ARM64 (ARM64 runs x64 via emulation)
+ArchitecturesAllowed=x64compatible
+ArchitecturesInstallIn64BitMode=x64compatible
 
 ; KEY CHANGE: No admin privileges required
 PrivilegesRequired=lowest
